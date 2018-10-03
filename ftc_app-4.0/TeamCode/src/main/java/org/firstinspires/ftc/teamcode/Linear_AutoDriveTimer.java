@@ -37,35 +37,34 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * This file illustrates the concept of driving a path based on time.
  * It uses the common Pushbot hardware class to define the drive on the robot.
  * The code is structured as a LinearOpMode
- *
+ * <p>
  * The code assumes that you do NOT have encoders on the wheels,
- *   otherwise you would use: PushbotAutoDriveByEncoder;
- *
- *   The desired path in this example is:
- *   - Drive forward for 3 seconds
- *   - Spin right for 1.3 seconds
- *   - Drive Backwards for 1 Second
- *   - Stop and close the claw.
- *
- *  The code is written in a simple form with no optimizations.
- *  However, there are several ways that this type of sequence could be streamlined,
- *
+ * otherwise you would use: PushbotAutoDriveByEncoder;
+ * <p>
+ * The desired path in this example is:
+ * - Drive forward for 3 seconds
+ * - Spin right for 1.3 seconds
+ * - Drive Backwards for 1 Second
+ * - Stop and close the claw.
+ * <p>
+ * The code is written in a simple form with no optimizations.
+ * However, there are several ways that this type of sequence could be streamlined,
+ * <p>
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Linear_AutoDriveTimer", group="Pushbot")
+@Autonomous(name = "Linear_AutoDriveTimer", group = "Pushbot")
 //@Disabled
 public class Linear_AutoDriveTimer extends LinearOpMode {
 
     /* Declare OpMode members. */
-    //HardwarePushbot         robot   = new HardwarePushbot();   // Use a Pushbot's hardware
     Testbot robot = new Testbot(); // use's Testbot's hardware
-    private ElapsedTime       runtime = new ElapsedTime();
+    private ElapsedTime runtime = new ElapsedTime();
 
 
-    static final double     FORWARD_SPEED = 0.6;
-    static final double     TURN_SPEED    = 0.5;
+    static final double FORWARD_SPEED = 0.6;
+    static final double TURN_SPEED = 0.5;
 
     @Override
     public void runOpMode() {
@@ -111,12 +110,6 @@ public class Linear_AutoDriveTimer extends LinearOpMode {
             telemetry.addData("Path", "Leg 3: %2.5f S Elapsed", runtime.seconds());
             telemetry.update();
         }
-
-        /*// Step 4:  Stop and close the claw.
-        robot.leftDrive.setPower(0);
-        robot.rightDrive.setPower(0);
-        robot.leftClaw.setPosition(1.0);
-        robot.rightClaw.setPosition(0.0);*/
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
