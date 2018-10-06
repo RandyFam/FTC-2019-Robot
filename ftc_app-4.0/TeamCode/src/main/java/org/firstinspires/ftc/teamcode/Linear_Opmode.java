@@ -32,24 +32,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-
-
-/**
- * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
- * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
- * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
- * class is instantiated on the Robot Controller and executed.
- * <p>
- * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
- * It includes all the skeletal structure that all linear OpModes contain.
- * <p>
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
 
 @TeleOp(name = "Basic: Linear OpMode", group = "Linear Opmode")
 //@Disabled
@@ -70,7 +54,6 @@ public class Linear_Opmode extends LinearOpMode {
         robot.leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         robot.rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         robot.armMotor = hardwareMap.get(DcMotor.class, "arm_motor");
-        robot.intakeServo = hardwareMap.get(Servo.class, "intake_servo");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -90,29 +73,14 @@ public class Linear_Opmode extends LinearOpMode {
             double rightPower;
             double armPower;
 
-            // Choose to drive using either Tank Mode, or POV Mode
-            // Comment out the method that's not used.  The default below is POV.
-
-            // POV Mode uses left stick to go forward, and right stick to turn.
-            // - This uses basic math to combine motions and is easier to drive straight.
             double drive = gamepad1.left_stick_y;
             double turn = -gamepad1.right_stick_x;
             double armUpValue = gamepad1.right_trigger;
             double armDownValue = gamepad1.left_trigger;
+
             leftPower = Range.clip(drive + turn, -1.0, 1.0);
             rightPower = Range.clip(drive - turn, -1.0, 1.0);
             armPower = Range.clip(armUpValue - armDownValue, -1.0, 1.0);
-
-            // Servo code for intake
-            boolean IntakeOn = gamepad1.a;
-            boolean IntakeOff = gamepad1.b;
-            if (IntakeOn) {
-                // sets position to .4, or a number close to 90 degrees
-                robot.intakeServo.setPosition(0.4);
-            } else if (IntakeOff) {
-                // sets position to 0, or 0 degrees
-                robot.intakeServo.setPosition(0.0);
-            }
 
             // Send calculated power to wheels
             robot.leftDrive.setPower(leftPower);
