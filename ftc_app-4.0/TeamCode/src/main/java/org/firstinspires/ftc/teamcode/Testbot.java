@@ -31,8 +31,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Testbot {
     /* Public OpMode members. */
@@ -45,7 +43,7 @@ public class Testbot {
 
     /* Constructor */
     public Testbot() {
-
+        // this is where all of the code that makes this class.
     }
 
     /* Initialize standard Hardware interfaces */

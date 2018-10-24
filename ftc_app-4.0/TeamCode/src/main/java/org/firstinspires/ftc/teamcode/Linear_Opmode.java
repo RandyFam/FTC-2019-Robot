@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -40,7 +41,10 @@ import com.qualcomm.robotcore.util.Range;
 public class Linear_Opmode extends LinearOpMode {
 
     // Declare OpMode members.
-    Testbot robot = new Testbot(); // use's SamplePushbot's hardware
+
+    //creating an object from the Testbot's class
+    Testbot robot = new Testbot();
+
     private ElapsedTime runtime = new ElapsedTime();
 
     @Override
@@ -57,8 +61,9 @@ public class Linear_Opmode extends LinearOpMode {
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        robot.leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        robot.rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        // Was FORWARD, REVERSE for leftDrive and rightDrive
+        robot.leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        robot.rightDrive.setDirection(DcMotor.Direction.FORWARD);
         robot.armMotor.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
