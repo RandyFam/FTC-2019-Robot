@@ -79,7 +79,7 @@ public class Linear_Opmode extends LinearOpMode {
             double armPower;
 
             double drive = gamepad1.left_stick_y;
-            double turn = -gamepad1.right_stick_x;
+            double turn = gamepad1.right_stick_x;
             double armUpValue = gamepad1.right_trigger;
             double armDownValue = gamepad1.left_trigger;
 
