@@ -58,6 +58,7 @@ public class Linear_Opmode extends LinearOpMode {
         robot.leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         robot.rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         robot.armMotor = hardwareMap.get(DcMotor.class, "arm_motor");
+        robot.intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -65,6 +66,7 @@ public class Linear_Opmode extends LinearOpMode {
         robot.leftDrive.setDirection(DcMotor.Direction.REVERSE);
         robot.rightDrive.setDirection(DcMotor.Direction.FORWARD);
         robot.armMotor.setDirection(DcMotor.Direction.FORWARD);
+        robot.intakeMotor.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -74,22 +76,38 @@ public class Linear_Opmode extends LinearOpMode {
         while (opModeIsActive()) {
 
             // Setup a variable for each drive wheel to save power level for telemetry
+            // Power variables
             double leftPower;
             double rightPower;
             double armPower;
 
-            double drive = gamepad1.left_stick_y;
-            double turn = gamepad1.right_stick_x;
-            double armUpValue = gamepad1.right_trigger;
-            double armDownValue = gamepad1.left_trigger;
+            // Variables for the game pad
+            double driveForward = gamepad1.right_trigger;
+            double driveReverse = gamepad1.left_trigger;
+            double armValue = gamepad1.right_stick_y;
+            double turn = gamepad1.left_stick_x;
+            boolean isIntake = gamepad1.a;
 
-            leftPower = Range.clip(drive + turn, -1.0, 1.0);
-            rightPower = Range.clip(drive - turn, -1.0, 1.0);
-            armPower = Range.clip(armUpValue - armDownValue, -1.0, 1.0);
+            // Other Variables
+            boolean firstRun = true;
+            double driveValue = driveForward - driveReverse;
 
-            // Send calculated power to wheels
-            robot.leftDrive.setPower(leftPower);
-            robot.rightDrive.setPower(rightPower);
+            // Intake toggle when A button is held down
+            if (isIntake && firstRun) {
+                robot.intakeMotor.setPower(.8);
+                firstRun = false;
+            } else {
+                robot.intakeMotor.setPower(0);
+                firstRun = true;
+            }
+
+            leftPower = Range.clip(driveValue + turn, -1.0, 1.0);
+            rightPower = Range.clip(driveValue - turn, -1.0, 1.0);
+            armPower = Range.clip(armValue, -1.0, 1.0);
+
+            // Send calculated power to wheel motors
+            robot.leftDrive.setPower(-leftPower);
+            robot.rightDrive.setPower(-rightPower);
             robot.armMotor.setPower(armPower);
 
             // Show the elapsed game time and wheel power.
