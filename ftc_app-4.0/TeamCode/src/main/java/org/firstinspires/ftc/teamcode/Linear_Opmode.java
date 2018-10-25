@@ -86,25 +86,28 @@ public class Linear_Opmode extends LinearOpMode {
             double driveReverse = gamepad1.left_trigger;
             double armValue = gamepad1.right_stick_y;
             double turn = gamepad1.left_stick_x;
-            boolean intakeOn = gamepad1.x;
-            boolean intakeOff = gamepad1.a;
-            boolean intakeReverse = gamepad1.b;
 
             // Other Variables
-            boolean firstRun = true;
             double driveValue = driveForward - driveReverse;
+            double requestedIntake = 0;
+            boolean buttonDown = false;
 
-            // Intake on when X button is pressed
-            if (intakeOn) {
-                robot.intakeMotor.setPower(.8);
+            if (!gamepad1.a && !gamepad1.b && buttonDown) {
+                buttonDown = false;
             }
-            // Intake off when A button is pressed
-            if (intakeOff) {
+            else if (gamepad1.a && !buttonDown) {
+                buttonDown = true;
+                requestedIntake = 1;
+            }
+            else if (gamepad1.b && !buttonDown) {
+                buttonDown = true;
+                requestedIntake = -1;
+            }
+
+            if(requestedIntake == robot.intakeMotor.getPower()){
                 robot.intakeMotor.setPower(0);
-            }
-            // Intake reverse when B button is pressed
-            if (intakeReverse) {
-                robot.intakeMotor.setPower(-.8);
+            }else{
+                robot.intakeMotor.setPower(requestedIntake);
             }
 
             leftPower = Range.clip(driveValue + turn, -1.0, 1.0);
