@@ -92,6 +92,7 @@ public class Linear_Opmode extends LinearOpMode {
             double requestedIntake = 0;
             boolean buttonDown = false;
 
+            // Toggles buttons A and B for intake forward or reverse
             if (!gamepad1.a && !gamepad1.b && buttonDown) {
                 buttonDown = false;
             }
@@ -104,17 +105,20 @@ public class Linear_Opmode extends LinearOpMode {
                 requestedIntake = -1;
             }
 
+            // Makes it so if you press the same button, it turns off the intake
             if(requestedIntake == robot.intakeMotor.getPower()){
                 robot.intakeMotor.setPower(0);
             }else{
                 robot.intakeMotor.setPower(requestedIntake);
             }
 
+            // Math for motor power values
             leftPower = Range.clip(driveValue + turn, -1.0, 1.0);
             rightPower = Range.clip(driveValue - turn, -1.0, 1.0);
             armPower = Range.clip(armValue, -1.0, 1.0);
 
             // Send calculated power to wheel motors
+            // left and right power are negated to actually drive forward
             robot.leftDrive.setPower(-leftPower);
             robot.rightDrive.setPower(-rightPower);
             robot.armMotor.setPower(armPower);
