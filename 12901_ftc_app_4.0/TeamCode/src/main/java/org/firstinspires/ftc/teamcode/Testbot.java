@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class Testbot {
     /* Public OpMode members. */
@@ -39,6 +40,8 @@ public class Testbot {
     public DcMotor armMotor;
     public DcMotor intakeMotor;
 
+    public Servo trapdoor;
+    public Servo trapdoor2;
     /* local OpMode members. */
     public HardwareMap hwMap;
 
@@ -57,6 +60,9 @@ public class Testbot {
         rightDrive.setPower(0);
         armMotor.setPower(0);
         intakeMotor.setPower(0);
+        trapdoor.setPosition(180);
+        trapdoor2.setPosition(0);
+
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.

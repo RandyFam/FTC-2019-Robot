@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -59,6 +60,10 @@ public class Linear_Opmode extends LinearOpMode {
         robot.rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         robot.armMotor = hardwareMap.get(DcMotor.class, "arm_motor");
         robot.intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor");
+        robot.trapdoor = hardwareMap.get(Servo.class, "trapdoor");
+        robot.trapdoor2 = hardwareMap.get(Servo.class, "trapdoor2");
+
+
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -68,12 +73,31 @@ public class Linear_Opmode extends LinearOpMode {
         robot.armMotor.setDirection(DcMotor.Direction.FORWARD);
         robot.intakeMotor.setDirection(DcMotor.Direction.FORWARD);
 
+        double trapdoorPosition = .3;
+
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            robot.trapdoor.setPosition(trapdoorPosition);
+            robot.trapdoor2.setPosition(1 - trapdoorPosition);
+
+            if(gamepad1.left_bumper && trapdoorPosition <= 180) {
+                //trapdoorPosition += .001;
+                trapdoorPosition = .28;
+            }
+            else if(gamepad1.right_bumper && trapdoorPosition >= 0){
+                //trapdoorPosition -= .001;
+                trapdoorPosition = .42;
+            }
+            else{
+                trapdoorPosition = trapdoorPosition;
+            }
+
+
 
             // Setup a variable for each drive wheel to save power level for telemetry
             // Power variables
@@ -126,6 +150,7 @@ public class Linear_Opmode extends LinearOpMode {
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            telemetry.addData("Trapdoor Position", "Servo1 (%.2f", trapdoorPosition);
             telemetry.update();
         }
     }
