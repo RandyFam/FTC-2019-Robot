@@ -33,7 +33,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class Testbot {
+public class Robot {
     /* Public OpMode members. */
     public DcMotor leftDrive;
     public DcMotor rightDrive;
@@ -46,7 +46,7 @@ public class Testbot {
     public HardwareMap hwMap;
 
     /* Constructor */
-    public Testbot() {
+    public Robot() {
         // this is where all of the code that makes this class.
     }
 

@@ -44,7 +44,7 @@ public class Linear_Opmode extends LinearOpMode {
     // Declare OpMode members.
 
     //creating an object from the Testbot's class
-    Testbot robot = new Testbot();
+    Robot robot = new Robot();
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -62,7 +62,7 @@ public class Linear_Opmode extends LinearOpMode {
         robot.intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor");
         robot.trapdoor = hardwareMap.get(Servo.class, "trapdoor");
         robot.trapdoor2 = hardwareMap.get(Servo.class, "trapdoor2");
-        
+
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         // Was FORWARD, REVERSE for leftDrive and rightDrive
@@ -72,7 +72,6 @@ public class Linear_Opmode extends LinearOpMode {
         robot.intakeMotor.setDirection(DcMotor.Direction.FORWARD);
 
         double trapdoorPosition = .3;
-
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -94,8 +93,6 @@ public class Linear_Opmode extends LinearOpMode {
             else{
                 trapdoorPosition = trapdoorPosition;
             }
-
-
 
             // Setup a variable for each drive wheel to save power level for telemetry
             // Power variables
