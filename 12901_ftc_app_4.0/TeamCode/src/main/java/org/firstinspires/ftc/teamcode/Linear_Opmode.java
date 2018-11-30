@@ -79,10 +79,12 @@ public class Linear_Opmode extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            robot.trapdoor.setPosition(trapdoorPosition);
-            robot.trapdoor2.setPosition(1 - trapdoorPosition);
+            robot.trapdoor.setPosition(gamepad1.right_stick_y);
+            //robot.trapdoor2.setPosition(1 - trapdoorPosition);
 
-            if(gamepad1.left_bumper && trapdoorPosition <= 180) {
+
+
+ /*           if(gamepad1.left_bumper && trapdoorPosition <= 180) {
                 //trapdoorPosition += .001;
                 trapdoorPosition = .28;
             }
@@ -92,7 +94,7 @@ public class Linear_Opmode extends LinearOpMode {
             }
             else{
                 trapdoorPosition = trapdoorPosition;
-            }
+            }*/
 
             // Setup a variable for each drive wheel to save power level for telemetry
             // Power variables
