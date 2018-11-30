@@ -59,7 +59,8 @@ public class Linear_Opmode extends LinearOpMode {
         robot.leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         robot.rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         robot.armMotor = hardwareMap.get(DcMotor.class, "arm_motor");
-        robot.intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor");
+        robot.armMotor2 = hardwareMap.get(DcMotor.class, "arm_motor2");
+        //robot.intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor");
         robot.trapdoor = hardwareMap.get(Servo.class, "trapdoor");
         robot.trapdoor2 = hardwareMap.get(Servo.class, "trapdoor2");
 
@@ -69,7 +70,8 @@ public class Linear_Opmode extends LinearOpMode {
         robot.leftDrive.setDirection(DcMotor.Direction.REVERSE);
         robot.rightDrive.setDirection(DcMotor.Direction.FORWARD);
         robot.armMotor.setDirection(DcMotor.Direction.FORWARD);
-        robot.intakeMotor.setDirection(DcMotor.Direction.FORWARD);
+        robot.armMotor2.setDirection(DcMotor.Direction.FORWARD);
+        //robot.intakeMotor.setDirection(DcMotor.Direction.FORWARD);
 
         double trapdoorPosition = .3;
 
@@ -101,11 +103,13 @@ public class Linear_Opmode extends LinearOpMode {
             double leftPower;
             double rightPower;
             double armPower;
+            double armPower2;
 
             // Variables for the game pad
             double driveForward = gamepad1.right_trigger;
             double driveReverse = gamepad1.left_trigger;
-            double armValue = gamepad1.right_stick_y;
+            double armValue = gamepad2.left_stick_y;
+            double armValue2 = gamepad2.right_stick_y;
             double turn = gamepad1.left_stick_x;
 
             // Other Variables
@@ -114,7 +118,7 @@ public class Linear_Opmode extends LinearOpMode {
             boolean buttonDown = false;
 
             // Toggles buttons A and B for intake forward or reverse
-            if (!gamepad1.a && !gamepad1.b && buttonDown) {
+            /*if (!gamepad1.a && !gamepad1.b && buttonDown) {
                 buttonDown = false;
             }
             else if (gamepad1.a && !buttonDown) {
@@ -124,25 +128,27 @@ public class Linear_Opmode extends LinearOpMode {
             else if (gamepad1.b && !buttonDown) {
                 buttonDown = true;
                 requestedIntake = -1;
-            }
+            }*/
 
             // Makes it so if you press the same button, it turns off the intake
-            if(requestedIntake == robot.intakeMotor.getPower()){
+            /*if(requestedIntake == robot.intakeMotor.getPower()){
                 robot.intakeMotor.setPower(0);
             }else{
                 robot.intakeMotor.setPower(requestedIntake);
-            }
+            }*/
 
             // Math for motor power values
             leftPower = Range.clip(driveValue + turn, -1.0, 1.0);
             rightPower = Range.clip(driveValue - turn, -1.0, 1.0);
-            armPower = Range.clip(armValue, -1.0, 1.0);
+            armPower = Range.clip(armValue, -0.5, 0.5);
+            armPower2 = Range.clip(armValue2, -0.5, 0.5);
 
             // Send calculated power to wheel motors
             // left and right power are negated to actually drive forward
             robot.leftDrive.setPower(-leftPower);
             robot.rightDrive.setPower(-rightPower);
             robot.armMotor.setPower(armPower);
+            robot.armMotor2.setPower(armPower2);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());

@@ -38,6 +38,7 @@ public class Robot {
     public DcMotor leftDrive;
     public DcMotor rightDrive;
     public DcMotor armMotor;
+    public DcMotor armMotor2;
     public DcMotor intakeMotor;
 
     public Servo trapdoor;
@@ -59,7 +60,8 @@ public class Robot {
         leftDrive.setPower(0);
         rightDrive.setPower(0);
         armMotor.setPower(0);
-        intakeMotor.setPower(0);
+        armMotor2.setPower(0);
+        //intakeMotor.setPower(0);
         trapdoor.setPosition(180);
         trapdoor2.setPosition(0);
 
@@ -69,7 +71,8 @@ public class Robot {
         leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        armMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }
 
