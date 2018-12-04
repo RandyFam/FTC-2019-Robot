@@ -39,10 +39,11 @@ public class Robot {
     public DcMotor rightDrive;
     public DcMotor armMotor;
     public DcMotor armMotor2;
-    public DcMotor intakeMotor;
+    //public DcMotor intakeMotor;
 
     public Servo trapdoor;
-    public Servo trapdoor2;
+    public Servo intake1;
+    public Servo intake2;
     /* local OpMode members. */
     public HardwareMap hwMap;
 
@@ -62,8 +63,7 @@ public class Robot {
         armMotor.setPower(0);
         armMotor2.setPower(0);
         //intakeMotor.setPower(0);
-        trapdoor.setPosition(180);
-        trapdoor2.setPosition(0);
+        //trapdoor.setPosition(180);
 
 
         // Set all motors to run without encoders.
