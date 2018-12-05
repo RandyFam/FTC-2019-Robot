@@ -78,7 +78,6 @@ public class Linear_Opmode extends LinearOpMode {
 
         double trapDoorPosition = 0;
         double intakePosition = 0;
-
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
@@ -150,15 +149,16 @@ public class Linear_Opmode extends LinearOpMode {
             // Math for motor power values
             leftPower = Range.clip(driveValue + turn, -1.0, 1.0);
             rightPower = Range.clip(driveValue - turn, -1.0, 1.0);
-            armPower = Range.clip(armValue, -0.5, 0.5);
-            armPower2 = Range.clip(armValue2, -0.5, 0.5);
+            //armPower = Range.clip(armValue, -0.5, 0.5);
+            //armPower2 = Range.clip(armValue2, -0.5, 0.5);
+            armPower = armValue;
+            armPower2 = armValue2;
 
             // Send calculated power to wheel motors
-            // left and right power are negated to actually drive forward
-            robot.leftDrive.setPower(-leftPower);
-            robot.rightDrive.setPower(-rightPower);
-            robot.armMotor.setPower(armPower);
-            robot.armMotor2.setPower(armPower2);
+            robot.leftDrive.setPower(leftPower);
+            robot.rightDrive.setPower(rightPower);
+            robot.armMotor.setPower(armPower * 2);
+            robot.armMotor2.setPower(armPower2 * 2);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
