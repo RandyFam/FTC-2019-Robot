@@ -117,12 +117,12 @@ public class Linear_Opmode extends LinearOpMode {
             }
 
             robot.intake1.setPosition(intakePosition);
-            robot.intake2.setPosition(intakePosition);
+            robot.intake2.setPosition(1 - intakePosition);
 
             if (gamepad1.a) {
-                intakePosition = .91;
+                intakePosition = .90;
             } else if(gamepad1.b){
-                intakePosition = .05;
+                intakePosition = .10;
             } else {
                 intakePosition = .5;
             }
