@@ -162,7 +162,7 @@ public class Linear_Opmode extends LinearOpMode {
             leftPower = Range.clip(driveValue + turn, -1.0, 1.0);
             rightPower = Range.clip(driveValue - turn, -1.0, 1.0);
             armPower = Range.clip(armValue, -0.5, 0.5);
-            armPower2 = Range.clip(armValue2, -0.5, 0.5);
+            armPower2 = Range.clip(armValue2, -0.65, 0.65);
             //armPower = armValue;
             //armPower2 = armValue2;
 
