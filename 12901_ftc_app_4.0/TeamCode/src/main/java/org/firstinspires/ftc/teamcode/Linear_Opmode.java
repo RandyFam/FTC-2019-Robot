@@ -94,9 +94,9 @@ public class Linear_Opmode extends LinearOpMode {
             double armPower2;
             double armSet;
 
-            if(gamepad1.dpad_up){
+            if(gamepad2.dpad_up){
                 armSet = .5;
-            }else if(gamepad1.dpad_down){
+            }else if(gamepad2.dpad_down){
                 armSet = -.5;
             }else{
                 armSet = 0;
@@ -108,7 +108,7 @@ public class Linear_Opmode extends LinearOpMode {
             // Variables for the game pad
             double driveForward = gamepad1.right_trigger;
             double driveReverse = gamepad1.left_trigger;
-            double armValue2 = gamepad1.right_stick_y;
+            double armValue2 = gamepad2.right_stick_y;
             double armValue = armSet;
             double turn = gamepad1.left_stick_x;
 
@@ -130,9 +130,9 @@ public class Linear_Opmode extends LinearOpMode {
             robot.intake1.setPosition(intakePosition);
             robot.intake2.setPosition(1 - intakePosition);
 
-            if (gamepad1.a) {
+            if (gamepad2.a) {
                 intakePosition = .90;
-            } else if(gamepad1.b){
+            } else if(gamepad2.b){
                 intakePosition = .10;
             } else {
                 intakePosition = .5;
