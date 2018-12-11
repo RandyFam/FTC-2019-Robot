@@ -127,8 +127,9 @@ public class Linear_Opmode extends LinearOpMode {
                 trapDoorPosition -= .25;
             }
 
+            // Intake Code
             robot.intake1.setPosition(intakePosition);
-            robot.intake2.setPosition(1 - intakePosition);
+            robot.intake2.setPosition(intakePosition);
 
             if (gamepad2.a) {
                 intakePosition = .90;
