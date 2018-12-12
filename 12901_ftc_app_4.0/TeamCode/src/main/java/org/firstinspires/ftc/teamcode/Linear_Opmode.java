@@ -102,9 +102,6 @@ public class Linear_Opmode extends LinearOpMode {
                 armSet = 0;
             }
 
-
-
-
             // Variables for the game pad
             double driveForward = gamepad1.right_trigger;
             double driveReverse = gamepad1.left_trigger;
