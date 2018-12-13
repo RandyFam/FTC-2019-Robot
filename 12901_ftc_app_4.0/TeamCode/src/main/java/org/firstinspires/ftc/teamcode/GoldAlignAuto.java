@@ -35,20 +35,59 @@ import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
-import static android.os.SystemClock.sleep;
 
+@Autonomous(name = "GoldAlign", group = "DogeCV")
 
-@Autonomous(name="GoldAlign", group="DogeCV")
+public class GoldAlignAuto extends OpMode {
 
-public class GoldAlignAuto extends OpMode
-{
+    Robot robot = new Robot(); // uses the Robot's hardware
+    AutoCommands auto = new AutoCommands();
+
     // Detector object
     private GoldAlignDetector detector;
 
 
     @Override
     public void init() {
+
+        //robot.init(hardwareMap);
+
+        // Initialize the hardware variables. Note that the strings used here as parameters
+        // to 'get' must correspond to the names assigned during the robot configuration
+        // step (using the FTC Robot Controller app on the phone).
+        robot.leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
+        robot.rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        robot.armMotor = hardwareMap.get(DcMotor.class, "arm_motor");
+        robot.armMotor2 = hardwareMap.get(DcMotor.class, "arm_motor2");
+        //robot.intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor");
+        robot.trapdoor = hardwareMap.get(Servo.class, "trapdoor");
+        robot.intake1 = hardwareMap.get(Servo.class, "intake1");
+        robot.intake2 = hardwareMap.get(Servo.class, "intake2");
+
+        // Most robots need the motor on one side to be reversed to drive forward
+        // Reverse the motor that runs backwards when connected directly to the battery
+        // Was FORWARD, REVERSE for leftDrive and rightDrive
+        robot.leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        robot.rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        robot.armMotor.setDirection(DcMotor.Direction.FORWARD);
+        robot.armMotor2.setDirection(DcMotor.Direction.FORWARD);
+        robot.intake1.setDirection(Servo.Direction.FORWARD);
+        robot.intake2.setDirection(Servo.Direction.FORWARD);
+        //robot.intakeMotor.setDirection(DcMotor.Direction.FORWARD);
+
+
+
+
+
+
+
+
+
+
+
         telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
 
         // Set up detector
@@ -85,6 +124,22 @@ public class GoldAlignAuto extends OpMode
      */
     @Override
     public void start() {
+        //robot.leftDrive.setPower(1);
+        if (!detector.getAligned()) {
+           // auto.TurnRight(.8); // turn until detector is aligned
+        }
+/*        while (detector.getAligned()) {
+            //robot.leftDrive.setPower(1);
+            //auto.Drive(.8); // drive forward
+            sleep(1000);
+            //auto.Drive(-.6); // drive back
+            sleep(1000);
+            //auto.TurnLeft(.8); // turn left
+            sleep(1000);
+            //auto.Drive(.8); // drive to depot
+            sleep(2000);
+           // auto.DriveStop();
+        }*/
     }
 
     /*
@@ -92,14 +147,10 @@ public class GoldAlignAuto extends OpMode
      */
     @Override
     public void loop() {
-        telemetry.addData("IsAligned" , detector.getAligned()); // Is the bot aligned with the gold mineral?
-        telemetry.addData("X Pos" , detector.getXPosition()); // Gold X position.
-
-        while (detector.getAligned()){
-            
-        }
-
-
+        telemetry.addData("IsAligned", detector.getAligned()); // Is the bot aligned with the gold mineral?
+        telemetry.addData("X Pos", detector.getXPosition()); // Gold X position.
+        //telemetry.addData("Motors", "left (%.2f), right (%.2f)", robot.leftDrive.getPower(), robot.rightDrive.getPower());
+        robot.leftDrive.setPower(1);
     }
 
     /*
