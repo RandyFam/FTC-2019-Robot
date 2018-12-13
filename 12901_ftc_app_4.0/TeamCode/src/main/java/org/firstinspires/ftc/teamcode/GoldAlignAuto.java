@@ -85,8 +85,6 @@ public class GoldAlignAuto extends OpMode
      */
     @Override
     public void start() {
-        sleep(1);
-        detector.disable();
     }
 
     /*
@@ -94,8 +92,14 @@ public class GoldAlignAuto extends OpMode
      */
     @Override
     public void loop() {
-        //telemetry.addData("IsAligned" , detector.getAligned()); // Is the bot aligned with the gold mineral?
-        //telemetry.addData("X Pos" , detector.getXPosition()); // Gold X position.
+        telemetry.addData("IsAligned" , detector.getAligned()); // Is the bot aligned with the gold mineral?
+        telemetry.addData("X Pos" , detector.getXPosition()); // Gold X position.
+
+        while (detector.getAligned()){
+            
+        }
+
+
     }
 
     /*
