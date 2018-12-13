@@ -31,20 +31,24 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import android.hardware.Camera;
+import com.qualcomm.robotcore.hardware.Servo;
 
-public class Testbot {
+public class Robot {
     /* Public OpMode members. */
     public DcMotor leftDrive;
     public DcMotor rightDrive;
     public DcMotor armMotor;
-    public DcMotor intakeMotor;
+    public DcMotor armMotor2;
+    //public DcMotor intakeMotor;
 
+    public Servo trapdoor;
+    public Servo intake1;
+    public Servo intake2;
     /* local OpMode members. */
     public HardwareMap hwMap;
 
     /* Constructor */
-    public Testbot() {
+    public Robot() {
         // this is where all of the code that makes this class.
     }
 
@@ -57,14 +61,18 @@ public class Testbot {
         leftDrive.setPower(0);
         rightDrive.setPower(0);
         armMotor.setPower(0);
-        intakeMotor.setPower(0);
+        armMotor2.setPower(0);
+        //intakeMotor.setPower(0);
+        //trapdoor.setPosition(180);
+
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
         leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        armMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }
 

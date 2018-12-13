@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -43,7 +44,7 @@ public class Linear_Opmode extends LinearOpMode {
     // Declare OpMode members.
 
     //creating an object from the Testbot's class
-    Testbot robot = new Testbot();
+    Robot robot = new Robot();
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -58,7 +59,11 @@ public class Linear_Opmode extends LinearOpMode {
         robot.leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         robot.rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         robot.armMotor = hardwareMap.get(DcMotor.class, "arm_motor");
-        robot.intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor");
+        robot.armMotor2 = hardwareMap.get(DcMotor.class, "arm_motor2");
+        //robot.intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor");
+        robot.trapdoor = hardwareMap.get(Servo.class, "trapdoor");
+        robot.intake1 = hardwareMap.get(Servo.class, "intake1");
+        robot.intake2 = hardwareMap.get(Servo.class, "intake2");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -66,25 +71,42 @@ public class Linear_Opmode extends LinearOpMode {
         robot.leftDrive.setDirection(DcMotor.Direction.REVERSE);
         robot.rightDrive.setDirection(DcMotor.Direction.FORWARD);
         robot.armMotor.setDirection(DcMotor.Direction.FORWARD);
-        robot.intakeMotor.setDirection(DcMotor.Direction.FORWARD);
+        robot.armMotor2.setDirection(DcMotor.Direction.FORWARD);
+        robot.intake1.setDirection(Servo.Direction.FORWARD);
+        robot.intake2.setDirection(Servo.Direction.FORWARD);
+        //robot.intakeMotor.setDirection(DcMotor.Direction.FORWARD);
 
+        double trapDoorPosition = 0;
+        double intakePosition = 0;
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            //robot.trapdoor2.setPosition(1 - trapdoorPosition);
 
             // Setup a variable for each drive wheel to save power level for telemetry
             // Power variables
             double leftPower;
             double rightPower;
             double armPower;
+            double armPower2;
+            double armSet;
+
+            if(gamepad2.dpad_up){
+                armSet = .5;
+            }else if(gamepad2.dpad_down){
+                armSet = -.5;
+            }else{
+                armSet = 0;
+            }
 
             // Variables for the game pad
             double driveForward = gamepad1.right_trigger;
             double driveReverse = gamepad1.left_trigger;
-            double armValue = gamepad1.right_stick_y;
+            double armValue2 = gamepad2.right_stick_y;
+            double armValue = armSet;
             double turn = gamepad1.left_stick_x;
 
             // Other Variables
@@ -92,8 +114,30 @@ public class Linear_Opmode extends LinearOpMode {
             double requestedIntake = 0;
             boolean buttonDown = false;
 
+            robot.trapdoor.setPosition(trapDoorPosition);
+
+            if (gamepad1.x && trapDoorPosition <= 180) {
+                trapDoorPosition += .25;
+            }
+
+            if (gamepad1.y && trapDoorPosition >= 0) {
+                trapDoorPosition -= .25;
+            }
+
+            // Intake Code
+            robot.intake1.setPosition(intakePosition);
+            robot.intake2.setPosition(intakePosition);
+
+            if (gamepad2.a) {
+                intakePosition = .90;
+            } else if(gamepad2.b){
+                intakePosition = .10;
+            } else {
+                intakePosition = .5;
+            }
+
             // Toggles buttons A and B for intake forward or reverse
-            if (!gamepad1.a && !gamepad1.b && buttonDown) {
+            /*if (!gamepad1.a && !gamepad1.b && buttonDown) {
                 buttonDown = false;
             }
             else if (gamepad1.a && !buttonDown) {
@@ -103,29 +147,34 @@ public class Linear_Opmode extends LinearOpMode {
             else if (gamepad1.b && !buttonDown) {
                 buttonDown = true;
                 requestedIntake = -1;
-            }
+            }*/
 
             // Makes it so if you press the same button, it turns off the intake
-            if(requestedIntake == robot.intakeMotor.getPower()){
+            /*if(requestedIntake == robot.intakeMotor.getPower()){
                 robot.intakeMotor.setPower(0);
             }else{
                 robot.intakeMotor.setPower(requestedIntake);
-            }
+            }*/
 
             // Math for motor power values
             leftPower = Range.clip(driveValue + turn, -1.0, 1.0);
             rightPower = Range.clip(driveValue - turn, -1.0, 1.0);
-            armPower = Range.clip(armValue, -1.0, 1.0);
+            armPower = Range.clip(armValue, -0.5, 0.5);
+            armPower2 = Range.clip(armValue2, -0.65, 0.65);
+            //armPower = armValue;
+            //armPower2 = armValue2;
 
             // Send calculated power to wheel motors
-            // left and right power are negated to actually drive forward
-            robot.leftDrive.setPower(-leftPower);
-            robot.rightDrive.setPower(-rightPower);
+            robot.leftDrive.setPower(leftPower);
+            robot.rightDrive.setPower(rightPower);
             robot.armMotor.setPower(armPower);
+            robot.armMotor2.setPower(armPower2);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            telemetry.addData("Trapdoor Position", "Servo1 (%.2f", trapDoorPosition);
+            telemetry.addData("Intake Servo Values", "Servo2 & Servo3 (%.2f", intakePosition);
             telemetry.update();
         }
     }
