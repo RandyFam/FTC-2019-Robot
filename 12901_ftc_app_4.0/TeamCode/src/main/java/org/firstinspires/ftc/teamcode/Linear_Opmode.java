@@ -101,6 +101,7 @@ public class Linear_Opmode extends LinearOpMode {
             double turn = gamepad1.left_stick_x;
 
             // Other Variables
+            // Drive forward with right trigger, reverse with left trigger
             double driveValue = driveForward - driveReverse;
 
             // Trapdoor servo code
