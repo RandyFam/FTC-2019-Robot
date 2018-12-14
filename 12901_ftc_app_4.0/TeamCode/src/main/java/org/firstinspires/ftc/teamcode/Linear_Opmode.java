@@ -92,28 +92,18 @@ public class Linear_Opmode extends LinearOpMode {
             double rightPower;
             double armPower;
             double armPower2;
-            double armSet;
-
-            if(gamepad2.dpad_up){
-                armSet = .5;
-            }else if(gamepad2.dpad_down){
-                armSet = -.5;
-            }else{
-                armSet = 0;
-            }
 
             // Variables for the game pad
             double driveForward = gamepad1.right_trigger;
             double driveReverse = gamepad1.left_trigger;
             double armValue2 = gamepad2.right_stick_y;
-            double armValue = armSet;
+            double armValue;
             double turn = gamepad1.left_stick_x;
 
             // Other Variables
             double driveValue = driveForward - driveReverse;
-            double requestedIntake = 0;
-            boolean buttonDown = false;
 
+            // Trapdoor servo code
             robot.trapdoor.setPosition(trapDoorPosition);
 
             if (gamepad1.x && trapDoorPosition <= 180) {
@@ -130,10 +120,19 @@ public class Linear_Opmode extends LinearOpMode {
 
             if (gamepad2.a) {
                 intakePosition = .90;
-            } else if(gamepad2.b){
+            } else if (gamepad2.b) {
                 intakePosition = .10;
             } else {
                 intakePosition = .5;
+            }
+
+            // Arm Code
+            if (gamepad2.dpad_up) {
+                armValue = .5;
+            } else if (gamepad2.dpad_down) {
+                armValue = -.5;
+            } else {
+                armValue = 0;
             }
 
             // Toggles buttons A and B for intake forward or reverse
