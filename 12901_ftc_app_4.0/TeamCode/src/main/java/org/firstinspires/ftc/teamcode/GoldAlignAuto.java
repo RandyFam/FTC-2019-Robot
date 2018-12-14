@@ -33,26 +33,25 @@ import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 @Autonomous(name = "GoldAlign", group = "DogeCV")
 
-public class GoldAlignAuto extends OpMode {
+public class GoldAlignAuto extends LinearOpMode {
 
     Robot robot = new Robot(); // uses the Robot's hardware
-    AutoCommands auto = new AutoCommands();
+    private ElapsedTime runtime = new ElapsedTime();
 
     // Detector object
     private GoldAlignDetector detector;
 
 
     @Override
-    public void init() {
-
+    public void runOpMode() throws InterruptedException {
         //robot.init(hardwareMap);
 
         // Initialize the hardware variables. Note that the strings used here as parameters
@@ -78,17 +77,31 @@ public class GoldAlignAuto extends OpMode {
         robot.intake2.setDirection(Servo.Direction.FORWARD);
         //robot.intakeMotor.setDirection(DcMotor.Direction.FORWARD);
 
-
-
-
-
-
-
-
-
-
-
         telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
+
+        /*// Set up detector
+        detector = new GoldAlignDetector(); // Create detector
+        detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize it with the app context and camera
+        detector.useDefaults(); // Set detector to use default settings
+
+        // Optional tuning
+        detector.alignSize = 140; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
+        detector.alignPosOffset = 110; // How far from center frame to offset this alignment zone.
+        detector.downscale = 0.4; // How much to downscale the input frames
+
+        detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
+        //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
+        detector.maxAreaScorer.weight = 200; //Original 0.005
+
+        // Weights best values are 1-10 supposedly according to documentation
+
+        detector.ratioScorer.weight = 5000; //Original 5
+        detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
+
+        detector.enable(); // Start the detector!
+        // Send telemetry message to signify robot waiting;
+        telemetry.addData("Status", "Ready to run");
+        telemetry.update();*/
 
         // Set up detector
         detector = new GoldAlignDetector(); // Create detector
@@ -97,7 +110,7 @@ public class GoldAlignAuto extends OpMode {
 
         // Optional tuning
         detector.alignSize = 100; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
-        detector.alignPosOffset = 0; // How far from center frame to offset this alignment zone.
+        detector.alignPosOffset = 250; // How far from center frame to offset this alignment zone.
         detector.downscale = 0.4; // How much to downscale the input frames
 
         detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
@@ -109,56 +122,22 @@ public class GoldAlignAuto extends OpMode {
 
         detector.enable(); // Start the detector!
 
-
-    }
-
-    /*
-     * Code to run REPEATEDLY when the driver hits INIT
-     */
-    @Override
-    public void init_loop() {
-    }
-
-    /*
-     * Code to run ONCE when the driver hits PLAY
-     */
-    @Override
-    public void start() {
-        //robot.leftDrive.setPower(1);
-        if (!detector.getAligned()) {
-           // auto.TurnRight(.8); // turn until detector is aligned
+        // wait until driver presses START
+        waitForStart();
+        // auto code here
+        while (!detector.getAligned()) {
+            robot.TurnRight(.60); // keep turning until cube is aligned
         }
-/*        while (detector.getAligned()) {
-            //robot.leftDrive.setPower(1);
-            //auto.Drive(.8); // drive forward
-            sleep(1000);
-            //auto.Drive(-.6); // drive back
-            sleep(1000);
-            //auto.TurnLeft(.8); // turn left
-            sleep(1000);
-            //auto.Drive(.8); // drive to depot
-            sleep(2000);
-           // auto.DriveStop();
-        }*/
-    }
+        robot.Drive(.8); // go forward to knock gold mineral
+        sleep(1500);
+        robot.Drive(-.8); // drive back short distance
+        sleep(500);
+        /*robot.TurnRight(.5); // turn left towards depot
+        sleep(1000);
+        robot.Drive(.8); // drive to depot
+        sleep(3000);*/
+        //sleep(5000);
 
-    /*
-     * Code to run REPEATEDLY when the driver hits PLAY
-     */
-    @Override
-    public void loop() {
-        telemetry.addData("IsAligned", detector.getAligned()); // Is the bot aligned with the gold mineral?
-        telemetry.addData("X Pos", detector.getXPosition()); // Gold X position.
-        //telemetry.addData("Motors", "left (%.2f), right (%.2f)", robot.leftDrive.getPower(), robot.rightDrive.getPower());
-        robot.leftDrive.setPower(1);
-    }
-
-    /*
-     * Code to run ONCE after the driver hits STOP
-     */
-    @Override
-    public void stop() {
-        // Disable the detector
         detector.disable();
     }
 

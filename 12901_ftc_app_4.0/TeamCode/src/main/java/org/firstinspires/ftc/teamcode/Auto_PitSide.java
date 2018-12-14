@@ -39,7 +39,6 @@ public class Auto_PitSide extends LinearOpMode {
 
     /* Declare OpMode members. */
     Robot robot = new Robot(); // uses the Robot's hardware
-    AutoCommands auto = new AutoCommands(); // uses pre-made auto methods
 
     private ElapsedTime runtime = new ElapsedTime();
 

@@ -74,5 +74,34 @@ public class Robot {
         armMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+
+    /*
+    ------------------------------------------------------------
+    ------------------------------------------------------------
+    ------------------------------------------------------------
+    ------------------AUTO COMMANDS HERE------------------------
+    ------------------------------------------------------------
+    ------------------------------------------------------------
+    ------------------------------------------------------------
+     */
+
+    public void Drive(double power) {
+        leftDrive.setPower(-power);
+        rightDrive.setPower(-power);
+    }
+    public void DriveStop() {
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+    }
+
+    public void TurnRight(double power){
+        leftDrive.setPower(power);
+        rightDrive.setPower(-power);
+    }
+
+    public void TurnLeft(double power){
+        leftDrive.setPower(-power);
+        rightDrive.setPower(power);
+    }
 }
 
