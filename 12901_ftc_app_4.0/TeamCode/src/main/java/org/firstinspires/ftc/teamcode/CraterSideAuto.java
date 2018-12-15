@@ -192,7 +192,7 @@ public class CraterSideAuto extends OpMode
                 }
                 break;
             case 4:
-                if(runtime.time() <= (startTime + 4)){
+                if(runtime.time() <= (startTime + 3)){
                     //What we run
                     robot.Drive(-.8);
                     robot.AutoWrist(1);
