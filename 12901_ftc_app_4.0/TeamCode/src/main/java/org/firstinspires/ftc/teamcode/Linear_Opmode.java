@@ -64,6 +64,7 @@ public class Linear_Opmode extends LinearOpMode {
         robot.trapdoor = hardwareMap.get(Servo.class, "trapdoor");
         robot.intake1 = hardwareMap.get(Servo.class, "intake1");
         robot.intake2 = hardwareMap.get(Servo.class, "intake2");
+        robot.trapdoor2 = hardwareMap.get(Servo.class, "trapdoor2");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -77,6 +78,7 @@ public class Linear_Opmode extends LinearOpMode {
         //robot.intakeMotor.setDirection(DcMotor.Direction.FORWARD);
 
         double trapDoorPosition = 0;
+        double trapDoorPosition2 = 180;
         double intakePosition = 0;
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -95,9 +97,9 @@ public class Linear_Opmode extends LinearOpMode {
             double armSet;
 
             if(gamepad2.dpad_up){
-                armSet = .5;
-            }else if(gamepad2.dpad_down){
                 armSet = -.5;
+            }else if(gamepad2.dpad_down){
+                armSet = .5;
             }else{
                 armSet = 0;
             }
@@ -115,13 +117,12 @@ public class Linear_Opmode extends LinearOpMode {
             boolean buttonDown = false;
 
             robot.trapdoor.setPosition(trapDoorPosition);
+            robot.trapdoor2.setPosition(1 - trapDoorPosition);
 
-            if (gamepad1.x && trapDoorPosition <= 180) {
-                trapDoorPosition += .25;
-            }
-
-            if (gamepad1.y && trapDoorPosition >= 0) {
-                trapDoorPosition -= .25;
+            if (gamepad1.x ) {
+                trapDoorPosition = 1;
+            }else{
+                trapDoorPosition = .5;
             }
 
             // Intake Code
@@ -135,26 +136,6 @@ public class Linear_Opmode extends LinearOpMode {
             } else {
                 intakePosition = .5;
             }
-
-            // Toggles buttons A and B for intake forward or reverse
-            /*if (!gamepad1.a && !gamepad1.b && buttonDown) {
-                buttonDown = false;
-            }
-            else if (gamepad1.a && !buttonDown) {
-                buttonDown = true;
-                requestedIntake = 1;
-            }
-            else if (gamepad1.b && !buttonDown) {
-                buttonDown = true;
-                requestedIntake = -1;
-            }*/
-
-            // Makes it so if you press the same button, it turns off the intake
-            /*if(requestedIntake == robot.intakeMotor.getPower()){
-                robot.intakeMotor.setPower(0);
-            }else{
-                robot.intakeMotor.setPower(requestedIntake);
-            }*/
 
             // Math for motor power values
             leftPower = Range.clip(driveValue + turn, -1.0, 1.0);

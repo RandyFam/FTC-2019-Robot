@@ -33,26 +33,27 @@ import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@Autonomous(name = "GoldAlign", group = "DogeCV")
+@Autonomous(name="Crater Side", group="DogeCV")
 
-public class GoldAlignAuto extends LinearOpMode {
-
-    Robot robot = new Robot(); // uses the Robot's hardware
-    private ElapsedTime runtime = new ElapsedTime();
-
+public class CraterSideAuto extends OpMode
+{
     // Detector object
     private GoldAlignDetector detector;
-
-
+    Robot robot = new Robot(); // uses the Robot's hardware
+    private ElapsedTime runtime = new ElapsedTime();
+    int phase = 0;
+    double startTime = 0;
     @Override
-    public void runOpMode() throws InterruptedException {
-        //robot.init(hardwareMap);
+    public void init() {
+        telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
+
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
@@ -63,6 +64,7 @@ public class GoldAlignAuto extends LinearOpMode {
         robot.armMotor2 = hardwareMap.get(DcMotor.class, "arm_motor2");
         //robot.intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor");
         robot.trapdoor = hardwareMap.get(Servo.class, "trapdoor");
+        robot.trapdoor2 = hardwareMap.get(Servo.class, "trapdoor2");
         robot.intake1 = hardwareMap.get(Servo.class, "intake1");
         robot.intake2 = hardwareMap.get(Servo.class, "intake2");
 
@@ -77,7 +79,11 @@ public class GoldAlignAuto extends LinearOpMode {
         robot.intake2.setDirection(Servo.Direction.FORWARD);
         //robot.intakeMotor.setDirection(DcMotor.Direction.FORWARD);
 
-        telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
+
+
+
+
+
 
         /*// Set up detector
         detector = new GoldAlignDetector(); // Create detector
@@ -93,16 +99,10 @@ public class GoldAlignAuto extends LinearOpMode {
         //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
         detector.maxAreaScorer.weight = 200; //Original 0.005
 
-        // Weights best values are 1-10 supposedly according to documentation
-
         detector.ratioScorer.weight = 5000; //Original 5
         detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
 
-        detector.enable(); // Start the detector!
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Ready to run");
-        telemetry.update();*/
-
+        detector.enable(); // Start the detector!*/
         // Set up detector
         detector = new GoldAlignDetector(); // Create detector
         detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize it with the app context and camera
@@ -120,35 +120,107 @@ public class GoldAlignAuto extends LinearOpMode {
         detector.ratioScorer.weight = 5; //
         detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
 
-        detector.enable(); // Start the detector!
 
-        // wait until driver presses START
-        waitForStart();
-        // auto code here
-        while (!detector.getAligned()) {
+        // Send telemetry message to signify robot waiting;
+        telemetry.addData("Status", "Ready to run");
+        telemetry.update();
 
-            robot.TurnRight(.60); // keep turning until cube is aligned
+
+    }
+
+    /*
+     * Code to run REPEATEDLY when the driver hits INIT
+     */
+    @Override
+    public void init_loop() {
+    }
+
+    /*
+     * Code to run ONCE when the driver hits PLAY
+     */
+    @Override
+    public void start() {
+
+    }
+
+    /*
+     * Code to run REPEATEDLY when the driver hits PLAY
+     */
+    @Override
+    public void loop() {
+        telemetry.addData("IsAligned" , detector.getAligned()); // Is the bot aligned with the gold mineral?
+        telemetry.addData("X Pos" , detector.getXPosition()); // Gold X position.
+        switch(phase){
+            case 0:
+                if(runtime.time() <= 5) {
+                    robot.Drop();
+                    robot.Drive(0);
+                }else{
+                    robot.Close();
+                    detector.enable();
+                    startTime = runtime.time();
+                    phase++;
+                }
+                break;
+            case 1:
+                if(runtime.time() <= startTime + 5){
+
+                }else{
+                    startTime = runtime.time();
+                    phase++;
+                }
+                break;
+            case 2:
+                robot.TurnLeft(0.6);
+                if(detector.getAligned()){
+                    robot.Drive(0);
+                    startTime = runtime.time();
+                    phase++;
+
+                }
+                break;
+            case 3:
+                if(runtime.time() <= (startTime + 2)){
+
+                    //robot.ArmOut(1);
+                }else{//End
+                    robot.Drive(0);
+                    robot.ArmOut(0);
+                    startTime = runtime.time(); // Reset timer
+                    phase++;//Move to next action
+
+                }
+                break;
+            case 4:
+                if(runtime.time() <= (startTime + 4)){
+                    //What we run
+                    robot.Drive(-.8);
+                    robot.AutoWrist(1);
+                }else{
+                    robot.Drive(0);
+                    robot.ArmOut(0);
+                    startTime = runtime.time();
+                    phase++;
+
+                }
+                break;
+            case 5:
+                robot.Drive(0);
+                detector.disable();
+                break;
+
+
+
+
         }
-        detector.disable();
-        robot.ArmOut(1);
-        sleep(1000);
-        robot.Drive(.7);
-        sleep(1000);
-        robot.Drive(-.7);
-        sleep(1000);
+    }
 
-
-
-        //robot.Drive(.8); // go forward to knock gold mineral
-        //sleep(1500);
-        //robot.Drive(-.8); // drive back short distance
-        //sleep(500);
-        /*robot.TurnRight(.5); // turn left towards depot
-        sleep(1000);
-        robot.Drive(.8); // drive to depot
-        sleep(3000);*/
-        //sleep(5000);
-
+    /*
+     * Code to run ONCE after the driver hits STOP
+     */
+    @Override
+    public void stop() {
+        // Disable the detector
         detector.disable();
     }
 
