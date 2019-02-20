@@ -42,6 +42,7 @@ public class Robot {
     //public DcMotor intakeMotor;
 
     public Servo trapdoor;
+    public Servo trapdoor2;
     public Servo intake1;
     public Servo intake2;
     /* local OpMode members. */
@@ -73,6 +74,74 @@ public class Robot {
         armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    /*
+    ------------------------------------------------------------
+    ------------------------------------------------------------
+    ------------------------------------------------------------
+    ------------------AUTO COMMANDS HERE------------------------
+    ------------------------------------------------------------
+    ------------------------------------------------------------
+    ------------------------------------------------------------
+     */
+
+    public void Drive(double power) {
+        leftDrive.setPower(-power);
+        rightDrive.setPower(-power);
+    }
+    public void DriveStop() {
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+    }
+
+    public void TurnRight(double power){
+        leftDrive.setPower(power);
+        rightDrive.setPower(-power);
+    }
+
+    public void TurnLeft(double power){
+        leftDrive.setPower(-power);
+        rightDrive.setPower(power);
+    }
+
+    public void AutoArm(double power){ //POSITIVE ALWAYS MOVES OUT
+        //Negative power moves arm out
+        //Positive power moves arm inwards
+        //Max .65
+        armMotor2.setPower(-power * .65);
+    }
+
+    public void AutoWrist(double power){ //POSITIVE ALWAYS MOVES OUT
+        //Positive power moves arm out
+        //Negative power moves arm in
+        //Max .5
+        armMotor.setPower(power * .5);
+    }
+
+    public void ArmOut(double power){ //POSITIVE ALWAYS MOVES OUT
+        armMotor2.setPower(-power * .65);
+        armMotor.setPower(power * .5);
+    }
+
+    public void Drop() {
+        trapdoor.setPosition(0);
+        trapdoor2.setPosition(1);
+    }
+
+    public void Close(){
+        trapdoor.setPosition(.5);
+        trapdoor2.setPosition(.5);
+    }
+
+    public void Outtake(){
+        intake1.setPosition(.9);
+        intake2.setPosition(.9);
+    }
+
+    public void Intake(){
+        intake1.setPosition(.1);
+        intake2.setPosition(.1);
     }
 }
 

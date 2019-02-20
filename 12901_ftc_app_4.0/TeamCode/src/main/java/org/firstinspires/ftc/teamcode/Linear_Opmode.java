@@ -64,6 +64,7 @@ public class Linear_Opmode extends LinearOpMode {
         robot.trapdoor = hardwareMap.get(Servo.class, "trapdoor");
         robot.intake1 = hardwareMap.get(Servo.class, "intake1");
         robot.intake2 = hardwareMap.get(Servo.class, "intake2");
+        robot.trapdoor2 = hardwareMap.get(Servo.class, "trapdoor2");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -77,6 +78,7 @@ public class Linear_Opmode extends LinearOpMode {
         //robot.intakeMotor.setDirection(DcMotor.Direction.FORWARD);
 
         double trapDoorPosition = 0;
+        double trapDoorPosition2 = 180;
         double intakePosition = 0;
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -106,13 +108,12 @@ public class Linear_Opmode extends LinearOpMode {
 
             // Trapdoor servo code
             robot.trapdoor.setPosition(trapDoorPosition);
+            robot.trapdoor2.setPosition(1 - trapDoorPosition);
 
-            if (gamepad1.x && trapDoorPosition <= 180) {
-                trapDoorPosition += .25;
-            }
-
-            if (gamepad1.y && trapDoorPosition >= 0) {
-                trapDoorPosition -= .25;
+            if (gamepad1.x ) {
+                trapDoorPosition = 1;
+            }else{
+                trapDoorPosition = .5;
             }
 
             // Intake Code
