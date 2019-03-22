@@ -110,9 +110,9 @@ public class Linear_Opmode extends LinearOpMode {
             robot.trapdoor.setPosition(trapDoorPosition);
             robot.trapdoor2.setPosition(1 - trapDoorPosition);
 
-            if (gamepad1.x ) {
+            if (gamepad1.x) {
                 trapDoorPosition = 1;
-            }else{
+            } else {
                 trapDoorPosition = .5;
             }
 

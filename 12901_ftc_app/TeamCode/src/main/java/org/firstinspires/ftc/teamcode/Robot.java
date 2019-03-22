@@ -90,36 +90,37 @@ public class Robot {
         leftDrive.setPower(-power);
         rightDrive.setPower(-power);
     }
+
     public void DriveStop() {
         leftDrive.setPower(0);
         rightDrive.setPower(0);
     }
 
-    public void TurnRight(double power){
+    public void TurnRight(double power) {
         leftDrive.setPower(power);
         rightDrive.setPower(-power);
     }
 
-    public void TurnLeft(double power){
+    public void TurnLeft(double power) {
         leftDrive.setPower(-power);
         rightDrive.setPower(power);
     }
 
-    public void AutoArm(double power){ //POSITIVE ALWAYS MOVES OUT
+    public void AutoArm(double power) { //POSITIVE ALWAYS MOVES OUT
         //Negative power moves arm out
         //Positive power moves arm inwards
         //Max .65
         armMotor2.setPower(-power * .65);
     }
 
-    public void AutoWrist(double power){ //POSITIVE ALWAYS MOVES OUT
+    public void AutoWrist(double power) { //POSITIVE ALWAYS MOVES OUT
         //Positive power moves arm out
         //Negative power moves arm in
         //Max .5
         armMotor.setPower(power * .5);
     }
 
-    public void ArmOut(double power){ //POSITIVE ALWAYS MOVES OUT
+    public void ArmOut(double power) { //POSITIVE ALWAYS MOVES OUT
         armMotor2.setPower(-power * .65);
         armMotor.setPower(power * .5);
     }
@@ -129,17 +130,17 @@ public class Robot {
         trapdoor2.setPosition(1);
     }
 
-    public void Close(){
+    public void Close() {
         trapdoor.setPosition(.5);
         trapdoor2.setPosition(.5);
     }
 
-    public void Outtake(){
+    public void Outtake() {
         intake1.setPosition(.9);
         intake2.setPosition(.9);
     }
 
-    public void Intake(){
+    public void Intake() {
         intake1.setPosition(.1);
         intake2.setPosition(.1);
     }
