@@ -91,7 +91,7 @@ public class Robot {
         rightDrive.setPower(-power);
     }
 
-    public void DriveStop() {
+    public void Stop() {
         leftDrive.setPower(0);
         rightDrive.setPower(0);
     }
