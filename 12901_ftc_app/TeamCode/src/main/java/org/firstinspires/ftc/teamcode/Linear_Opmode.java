@@ -95,7 +95,10 @@ public class Linear_Opmode extends LinearOpMode {
             double armPower2;
 
             // Variables for the game pad
-            double driveValue = gamepad1.left_stick_y;
+            double forwardValue = gamepad1.right_trigger;
+            double reverseValue = gamepad1.left_trigger;
+            double driveValue = forwardValue - reverseValue;
+            //double driveValue = gamepad1.left_stick_y;
             double turnValue = gamepad1.right_stick_x;
             double armValue2 = gamepad2.right_stick_y;
             double armValue;
@@ -154,8 +157,8 @@ public class Linear_Opmode extends LinearOpMode {
             // Math for motor power values
             leftPower = Range.clip(driveValue + turnValue, -1.0, 1.0);
             rightPower = Range.clip(driveValue - turnValue, -1.0, 1.0);
-            armPower = Range.clip(armValue, -0.5, 0.5);
-            armPower2 = Range.clip(armValue2, -0.65, 0.65);
+            armPower = Range.clip(armValue, -1.0, 1.0);
+            armPower2 = Range.clip(armValue2, -1.0, 1.0);
             //armPower = armValue;
             //armPower2 = armValue2;
 
